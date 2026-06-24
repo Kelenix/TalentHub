@@ -1,0 +1,112 @@
+{
+  "common": {
+    "brandName": "TalentHub",
+    "contactWhatsApp": "Contacter sur WhatsApp",
+    "sendEmail": "Envoyer un email",
+    "available": "Disponible",
+    "unavailable": "Indisponible",
+    "viewProfile": "Voir le profil complet",
+    "noPaymentNotice": "Aucun paiement sur la plateforme. Vous échangez directement avec le prestataire."
+  },
+  "nav": {
+    "home": "Accueil",
+    "search": "Rechercher",
+    "categories": "Catégories",
+    "login": "Connexion",
+    "publish": "Publier une annonce",
+    "dashboard": "Tableau de bord"
+  },
+  "home": {
+    "heroEyebrow": "Diaspora · communauté",
+    "heroTitle": "Trouvez les talents près de chez vous.",
+    "heroSubtitle": "Cuisine, coiffure, couture, services… Découvrez les prestataires de la communauté en Italie, sans passer par les réseaux sociaux.",
+    "searchPlaceholder": "Rechercher un service, un plat, une coiffure…",
+    "searchButton": "Rechercher",
+    "categories": "Catégories",
+    "latestListings": "Dernières annonces",
+    "popularServices": "Services populaires",
+    "noListings": "Aucune annonce pour le moment."
+  },
+  "search": {
+    "title": "Résultats",
+    "filters": "Filtres",
+    "country": "Pays",
+    "city": "Ville",
+    "category": "Catégorie",
+    "subcategory": "Sous-catégorie",
+    "nationality": "Origine",
+    "allCities": "Toutes les villes",
+    "allNationalities": "Toutes les origines",
+    "availabilityOnly": "Disponible uniquement",
+    "sort": "Trier",
+    "resultsFor": "{count} résultats",
+    "noResults": "Aucune annonce ne correspond à votre recherche."
+  },
+  "listing": {
+    "preparationTime": "Temps de préparation",
+    "duration": "Durée",
+    "hairstyleType": "Type de coiffure",
+    "serviceZone": "Zone de service",
+    "publishedOn": "Publié le",
+    "origin": "Origine"
+  },
+  "provider": {
+    "about": "À propos",
+    "listings": "Annonces de ce prestataire",
+    "verified": "Profil vérifié",
+    "memberSince": "Membre depuis {year}",
+    "countryOfOrigin": "Pays d'origine",
+    "cityRegion": "Ville · Région",
+    "languages": "Langues",
+    "social": "Réseaux sociaux"
+  },
+  "dashboard": {
+    "myListings": "Mes annonces",
+    "subtitle": "Gérez vos services et votre disponibilité",
+    "addListing": "Ajouter une annonce",
+    "myProfile": "Mon profil",
+    "availability": "Disponibilité",
+    "messages": "Messages",
+    "statistics": "Statistiques",
+    "activeListings": "Annonces actives",
+    "viewsThisMonth": "Vues ce mois",
+    "whatsappContacts": "Contacts WhatsApp",
+    "edit": "Modifier",
+    "delete": "Supprimer",
+    "annonceCol": "Annonce",
+    "categoryCol": "Catégorie",
+    "viewsCol": "Vues",
+    "actionsCol": "Actions"
+  },
+  "admin": {
+    "title": "Administration",
+    "dashboard": "Tableau de bord",
+    "users": "Utilisateurs",
+    "listings": "Annonces",
+    "categories": "Catégories",
+    "moderation": "Modération",
+    "statistics": "Statistiques",
+    "providers": "Prestataires",
+    "pending": "En attente",
+    "reports": "Signalements"
+  },
+  "auth": {
+    "login": "Connexion",
+    "register": "Inscription",
+    "email": "Adresse email",
+    "password": "Mot de passe",
+    "submitLogin": "Se connecter",
+    "submitRegister": "Créer mon compte",
+    "firstName": "Prénom",
+    "lastName": "Nom",
+    "whatsapp": "Numéro WhatsApp",
+    "logout": "Déconnexion",
+    "checkEmailTitle": "Vérifiez votre email",
+    "checkEmailBody": "Un lien de confirmation vous a été envoyé. Cliquez dessus pour activer votre compte."
+  },
+  "footer": {
+    "tagline": "L'annuaire des talents de la communauté en Italie.",
+    "legal": "Mentions légales",
+    "privacy": "Confidentialité"
+  }
+}

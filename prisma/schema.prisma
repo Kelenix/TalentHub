@@ -1,0 +1,247 @@
+// TalentHub — schéma de données
+// Annuaire de mise en relation prestataires ↔ clients (sans paiement de service).
+// Auth gérée par Supabase Auth : la table User est liée à auth.users.id.
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider  = "postgresql"
+  url       = env("DATABASE_URL")
+  directUrl = env("DIRECT_URL")
+}
+
+// ──────────────────────────── Enums ────────────────────────────
+
+enum Role {
+  PROVIDER
+  ADMIN
+}
+
+enum UserStatus {
+  PENDING
+  ACTIVE
+  SUSPENDED
+}
+
+enum Availability {
+  AVAILABLE
+  UNAVAILABLE
+}
+
+enum ListingStatus {
+  DRAFT
+  PUBLISHED
+  SUSPENDED
+}
+
+enum ReportTargetType {
+  LISTING
+  USER
+}
+
+enum ReportStatus {
+  OPEN
+  REVIEWED
+  CLOSED
+}
+
+enum ContactEventType {
+  VIEW
+  WHATSAPP
+  EMAIL
+}
+
+// ──────────────────────────── Utilisateurs ────────────────────────────
+
+/// Lié 1‑1 à Supabase auth.users (l'id = auth.users.id). Aucun mot de passe stocké ici.
+model User {
+  id        String     @id @db.Uuid
+  email     String     @unique
+  role      Role       @default(PROVIDER)
+  status    UserStatus @default(PENDING)
+  createdAt DateTime   @default(now())
+  updatedAt DateTime   @updatedAt
+
+  profile ProviderProfile?
+
+  @@map("users")
+}
+
+model ProviderProfile {
+  id          String  @id @default(cuid())
+  userId      String  @unique @db.Uuid
+  user        User    @relation(fields: [userId], references: [id], onDelete: Cascade)
+  firstName   String
+  lastName    String
+  photoUrl    String?
+  description String?
+
+  countryOfOriginId String?
+  countryOfOrigin   Country? @relation("ProfileOrigin", fields: [countryOfOriginId], references: [id])
+  cityId            String?
+  city              City?    @relation("ProfileCity", fields: [cityId], references: [id])
+  region            String?
+
+  whatsappNumber String
+  contactEmail   String
+  socialLinks    Json?
+  languages      String[] @default([])
+
+  verified    Boolean  @default(false)
+  memberSince DateTime @default(now())
+
+  listings  Listing[]
+  createdAt DateTime  @default(now())
+  updatedAt DateTime  @updatedAt
+
+  @@map("provider_profiles")
+}
+
+// ──────────────────────────── Catégories (extensible) ────────────────────────────
+
+model Category {
+  id            String        @id @default(cuid())
+  name          String
+  slug          String        @unique
+  icon          String?
+  order         Int           @default(0)
+  isActive      Boolean       @default(true)
+  subcategories Subcategory[]
+  listings      Listing[]
+
+  @@map("categories")
+}
+
+model Subcategory {
+  id         String    @id @default(cuid())
+  categoryId String
+  category   Category  @relation(fields: [categoryId], references: [id], onDelete: Cascade)
+  name       String
+  slug       String
+  order      Int       @default(0)
+  listings   Listing[]
+
+  @@unique([categoryId, slug])
+  @@map("subcategories")
+}
+
+// ──────────────────────────── Référentiel géographique (multi-pays) ────────────────────────────
+
+model Country {
+  id       String  @id @default(cuid())
+  name     String
+  iso      String  @unique
+  isActive Boolean @default(true)
+
+  cities         City[]
+  profilesOrigin ProviderProfile[] @relation("ProfileOrigin")
+  listingsOrigin Listing[]         @relation("ListingOriginCountry")
+
+  @@map("countries")
+}
+
+model City {
+  id        String  @id @default(cuid())
+  countryId String
+  country   Country @relation(fields: [countryId], references: [id], onDelete: Cascade)
+  name      String
+  region    String?
+
+  profiles ProviderProfile[] @relation("ProfileCity")
+  listings Listing[]         @relation("ListingCity")
+
+  @@unique([countryId, name])
+  @@map("cities")
+}
+
+// ──────────────────────────── Annonces ────────────────────────────
+
+model Listing {
+  id          String @id @default(cuid())
+  providerId  String
+  provider    ProviderProfile @relation(fields: [providerId], references: [id], onDelete: Cascade)
+  title       String
+  description String
+
+  categoryId    String
+  category      Category     @relation(fields: [categoryId], references: [id])
+  subcategoryId String?
+  subcategory   Subcategory? @relation(fields: [subcategoryId], references: [id])
+
+  countryOfOriginId String?
+  countryOfOrigin   Country? @relation("ListingOriginCountry", fields: [countryOfOriginId], references: [id])
+  cityId            String?
+  city              City?    @relation("ListingCity", fields: [cityId], references: [id])
+  region            String?
+  serviceZone       String?
+
+  availability Availability  @default(AVAILABLE)
+  status       ListingStatus @default(PUBLISHED)
+
+  /// Champs spécifiques par catégorie (extensible sans migration).
+  /// cuisine  : { dishOrigin, preparationTime }
+  /// coiffure : { hairstyleType, averageDuration }
+  attributes Json?
+
+  viewsCount Int @default(0)
+
+  // Hooks monétisation (mise en avant)
+  promoted      Boolean   @default(false)
+  promotedUntil DateTime?
+
+  publishedAt DateTime?
+  createdAt   DateTime  @default(now())
+  updatedAt   DateTime  @updatedAt
+
+  photos        ListingPhoto[]
+  contactEvents ContactEvent[]
+
+  @@index([categoryId])
+  @@index([subcategoryId])
+  @@index([cityId])
+  @@index([status, availability])
+  @@index([promoted, promotedUntil])
+  @@map("listings")
+}
+
+model ListingPhoto {
+  id        String  @id @default(cuid())
+  listingId String
+  listing   Listing @relation(fields: [listingId], references: [id], onDelete: Cascade)
+  url       String
+  order     Int     @default(0)
+  isCover   Boolean @default(false)
+
+  @@index([listingId])
+  @@map("listing_photos")
+}
+
+// ──────────────────────────── Modération & analytics ────────────────────────────
+
+model Report {
+  id            String           @id @default(cuid())
+  targetType    ReportTargetType
+  targetId      String
+  reason        String
+  reporterEmail String?
+  status        ReportStatus     @default(OPEN)
+  createdAt     DateTime         @default(now())
+
+  @@index([status])
+  @@index([targetType, targetId])
+  @@map("reports")
+}
+
+model ContactEvent {
+  id        String           @id @default(cuid())
+  listingId String
+  listing   Listing          @relation(fields: [listingId], references: [id], onDelete: Cascade)
+  type      ContactEventType
+  createdAt DateTime         @default(now())
+
+  @@index([listingId, type])
+  @@index([createdAt])
+  @@map("contact_events")
+}

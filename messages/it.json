@@ -1,0 +1,112 @@
+{
+  "common": {
+    "brandName": "TalentHub",
+    "contactWhatsApp": "Contatta su WhatsApp",
+    "sendEmail": "Invia un'email",
+    "available": "Disponibile",
+    "unavailable": "Non disponibile",
+    "viewProfile": "Vedi il profilo completo",
+    "noPaymentNotice": "Nessun pagamento sulla piattaforma. Comunichi direttamente con il prestatore."
+  },
+  "nav": {
+    "home": "Home",
+    "search": "Cerca",
+    "categories": "Categorie",
+    "login": "Accedi",
+    "publish": "Pubblica un annuncio",
+    "dashboard": "Pannello"
+  },
+  "home": {
+    "heroEyebrow": "Diaspora · comunità",
+    "heroTitle": "Trova i talenti vicino a te.",
+    "heroSubtitle": "Cucina, acconciature, sartoria, servizi… Scopri i prestatori della comunità in Italia, senza passare dai social.",
+    "searchPlaceholder": "Cerca un servizio, un piatto, un'acconciatura…",
+    "searchButton": "Cerca",
+    "categories": "Categorie",
+    "latestListings": "Ultimi annunci",
+    "popularServices": "Servizi popolari",
+    "noListings": "Nessun annuncio per ora."
+  },
+  "search": {
+    "title": "Risultati",
+    "filters": "Filtri",
+    "country": "Paese",
+    "city": "Città",
+    "category": "Categoria",
+    "subcategory": "Sottocategoria",
+    "nationality": "Origine",
+    "allCities": "Tutte le città",
+    "allNationalities": "Tutte le origini",
+    "availabilityOnly": "Solo disponibili",
+    "sort": "Ordina",
+    "resultsFor": "{count} risultati",
+    "noResults": "Nessun annuncio corrisponde alla tua ricerca."
+  },
+  "listing": {
+    "preparationTime": "Tempo di preparazione",
+    "duration": "Durata",
+    "hairstyleType": "Tipo di acconciatura",
+    "serviceZone": "Zona di servizio",
+    "publishedOn": "Pubblicato il",
+    "origin": "Origine"
+  },
+  "provider": {
+    "about": "Informazioni",
+    "listings": "Annunci di questo prestatore",
+    "verified": "Profilo verificato",
+    "memberSince": "Membro dal {year}",
+    "countryOfOrigin": "Paese d'origine",
+    "cityRegion": "Città · Regione",
+    "languages": "Lingue",
+    "social": "Social"
+  },
+  "dashboard": {
+    "myListings": "I miei annunci",
+    "subtitle": "Gestisci i tuoi servizi e la tua disponibilità",
+    "addListing": "Aggiungi un annuncio",
+    "myProfile": "Il mio profilo",
+    "availability": "Disponibilità",
+    "messages": "Messaggi",
+    "statistics": "Statistiche",
+    "activeListings": "Annunci attivi",
+    "viewsThisMonth": "Visualizzazioni questo mese",
+    "whatsappContacts": "Contatti WhatsApp",
+    "edit": "Modifica",
+    "delete": "Elimina",
+    "annonceCol": "Annuncio",
+    "categoryCol": "Categoria",
+    "viewsCol": "Visualizzazioni",
+    "actionsCol": "Azioni"
+  },
+  "admin": {
+    "title": "Amministrazione",
+    "dashboard": "Pannello",
+    "users": "Utenti",
+    "listings": "Annunci",
+    "categories": "Categorie",
+    "moderation": "Moderazione",
+    "statistics": "Statistiche",
+    "providers": "Prestatori",
+    "pending": "In attesa",
+    "reports": "Segnalazioni"
+  },
+  "auth": {
+    "login": "Accedi",
+    "register": "Registrazione",
+    "email": "Indirizzo email",
+    "password": "Password",
+    "submitLogin": "Accedi",
+    "submitRegister": "Crea il mio account",
+    "firstName": "Nome",
+    "lastName": "Cognome",
+    "whatsapp": "Numero WhatsApp",
+    "logout": "Disconnetti",
+    "checkEmailTitle": "Controlla la tua email",
+    "checkEmailBody": "Ti abbiamo inviato un link di conferma. Cliccaci sopra per attivare il tuo account."
+  },
+  "footer": {
+    "tagline": "L'annuario dei talenti della comunità in Italia.",
+    "legal": "Note legali",
+    "privacy": "Privacy"
+  }
+}
