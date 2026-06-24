@@ -7,6 +7,7 @@ import {
   type UserFilter,
 } from "@/lib/admin/queries";
 import { UsersTable } from "@/components/admin/users-table";
+import { LiveSearchInput } from "@/components/search/live-search-input";
 import { cn } from "@/lib/utils";
 
 export const dynamic = "force-dynamic";
@@ -104,17 +105,12 @@ export default async function AdminUsersPage({
           })}
         </div>
 
-        <form className="flex items-center gap-2">
-          {filter !== "all" && (
-            <input type="hidden" name="filter" value={filter} />
-          )}
-          <input
-            name="q"
-            defaultValue={q}
+        <div className="w-full sm:w-64">
+          <LiveSearchInput
+            pathname="/admin/utilisateurs"
             placeholder="Rechercher un utilisateur…"
-            className="h-10 w-56 rounded-lg border border-border bg-card px-3 text-sm outline-none focus:ring-2 focus:ring-ring"
           />
-        </form>
+        </div>
       </div>
 
       <div className="mt-4">

@@ -29,6 +29,7 @@
   },
   "search": {
     "title": "Résultats",
+    "searchPlaceholder": "Rechercher un service, un plat, une coiffure…",
     "filters": "Filtres",
     "country": "Pays",
     "city": "Ville",

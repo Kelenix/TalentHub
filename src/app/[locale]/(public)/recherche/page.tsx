@@ -13,6 +13,7 @@ import {
 import { ListingCard } from "@/components/listings/listing-card";
 import { FiltersForm } from "@/components/search/filters-form";
 import { Pagination } from "@/components/search/pagination";
+import { LiveSearchInput } from "@/components/search/live-search-input";
 
 export const dynamic = "force-dynamic";
 
@@ -85,6 +86,9 @@ export default async function SearchPage({
         />
 
         <section>
+          <div className="mb-5">
+            <LiveSearchInput placeholder={t("searchPlaceholder")} />
+          </div>
           <div className="mb-6 flex items-center justify-between">
             <h1 className="text-2xl font-bold text-ink">
               {t("resultsFor", { count: total })}

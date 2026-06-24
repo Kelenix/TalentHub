@@ -2,6 +2,7 @@ import { setRequestLocale } from "next-intl/server";
 import { requireAdmin } from "@/lib/auth/user";
 import { listAllListings } from "@/lib/admin/queries";
 import { ModerationTable } from "@/components/admin/moderation-table";
+import { LiveSearchInput } from "@/components/search/live-search-input";
 
 export const dynamic = "force-dynamic";
 
@@ -37,14 +38,12 @@ export default async function AdminListingsPage({
     <div className="mx-auto max-w-7xl px-4 py-8 sm:px-8 sm:py-10">
       <div className="flex flex-wrap items-center justify-between gap-3">
         <h1 className="text-3xl font-bold text-ink">Modération des annonces</h1>
-        <form>
-          <input
-            name="q"
-            defaultValue={q}
+        <div className="w-full sm:w-72">
+          <LiveSearchInput
+            pathname="/admin/annonces"
             placeholder="Rechercher une annonce…"
-            className="h-10 w-56 rounded-lg border border-border bg-card px-3 text-sm outline-none focus:ring-2 focus:ring-ring"
           />
-        </form>
+        </div>
       </div>
       <div className="mt-6">
         <ModerationTable rows={rows} />

@@ -29,6 +29,7 @@
   },
   "search": {
     "title": "Risultati",
+    "searchPlaceholder": "Cerca un servizio, un piatto, un'acconciatura…",
     "filters": "Filtri",
     "country": "Paese",
     "city": "Città",

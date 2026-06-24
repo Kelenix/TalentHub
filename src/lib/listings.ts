@@ -1,5 +1,6 @@
 import type { Prisma } from "@prisma/client";
 import { prisma } from "@/lib/prisma";
+import { matchesQuery } from "@/lib/search";
 
 /** Tant que la base n'est pas configurée, les requêtes renvoient du vide (états vides gracieux). */
 function dbReady() {
@@ -84,23 +85,43 @@ export async function searchListings(
     where.city = { country: { iso: params.country } };
   }
   if (params.nationality) where.countryOfOrigin = { iso: params.nationality };
-  if (params.q) {
-    where.OR = [
-      { title: { contains: params.q, mode: "insensitive" } },
-      { description: { contains: params.q, mode: "insensitive" } },
-    ];
-  }
 
   const safePage = Math.max(1, page);
+  const orderBy: Prisma.ListingOrderByWithRelationInput[] = [
+    { promoted: "desc" },
+    { publishedAt: "desc" },
+    { createdAt: "desc" },
+  ];
+  const q = params.q?.trim();
+
+  // Recherche texte tolérante (sans accent, multi-mots) côté application.
+  if (q) {
+    const candidates = await prisma.listing.findMany({
+      where,
+      include: listingInclude,
+      orderBy,
+      take: 500,
+    });
+    const filtered = candidates.filter((l) =>
+      matchesQuery(
+        `${l.title} ${l.description} ${l.category.name} ${l.subcategory?.name ?? ""} ${l.provider.firstName} ${l.provider.lastName}`,
+        q,
+      ),
+    );
+    return {
+      items: filtered.slice(
+        (safePage - 1) * SEARCH_PAGE_SIZE,
+        safePage * SEARCH_PAGE_SIZE,
+      ),
+      total: filtered.length,
+    };
+  }
+
   const [items, total] = await prisma.$transaction([
     prisma.listing.findMany({
       where,
       include: listingInclude,
-      orderBy: [
-        { promoted: "desc" },
-        { publishedAt: "desc" },
-        { createdAt: "desc" },
-      ],
+      orderBy,
       skip: (safePage - 1) * SEARCH_PAGE_SIZE,
       take: SEARCH_PAGE_SIZE,
     }),
@@ -112,8 +133,10 @@ export async function searchListings(
 
 export async function getListingById(id: string) {
   if (!dbReady()) return null;
-  return prisma.listing.findFirst({
-    where: { id, status: "PUBLISHED" },
+  // Renvoie l'annonce quel que soit son statut ; la visibilité (public vs
+  // propriétaire/admin pour les annonces non publiées) est gérée par la page.
+  return prisma.listing.findUnique({
+    where: { id },
     include: listingInclude,
   });
 }

@@ -226,7 +226,12 @@ async function main() {
 
   // 1. Purge des données de démonstration existantes (cascade users → profils → annonces → photos)
   await prisma.user.deleteMany({
-    where: { email: { endsWith: "@talenthub.test" } },
+    where: {
+      email: {
+        endsWith: "@talenthub.test",
+        notIn: ["admin@talenthub.test", "demo@talenthub.test"],
+      },
+    },
   });
 
   // 2. Référentiels

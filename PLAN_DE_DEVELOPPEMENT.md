@@ -329,3 +329,6 @@ talenthub/
 
 > **Note importante** : les leviers #1, #3, #4, #5 n'introduisent **aucun flux de paiement sur la plateforme** (facturation hors-ligne ou gérée par Google) → on peut démarrer la monétisation **sans Stripe**. Stripe n'est nécessaire que pour #2 (mise en avant) et #6 (premium), à ajouter plus tard. correct
 ```
+
+
+
