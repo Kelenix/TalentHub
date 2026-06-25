@@ -14,9 +14,10 @@ const categories = [
 ];
 
 export async function PublicHeader() {
-  const [t, ta, user] = await Promise.all([
+  const [t, ta, tcat, user] = await Promise.all([
     getTranslations("nav"),
     getTranslations("auth"),
+    getTranslations("categories"),
     getCurrentUser(),
   ]);
   const isAdmin = user?.role === "ADMIN";
@@ -35,7 +36,7 @@ export async function PublicHeader() {
                 href={`/recherche?category=${c.slug}`}
                 className="transition-colors hover:text-ink"
               >
-                {c.label}
+                {tcat.has(c.slug) ? tcat(c.slug) : c.label}
               </Link>
             ))}
           </nav>

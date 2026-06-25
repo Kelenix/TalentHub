@@ -18,14 +18,16 @@
   },
   "home": {
     "heroEyebrow": "Diaspora · communauté",
-    "heroTitle": "Trouvez les talents près de chez vous.",
+    "heroTitle": "Trouvez les <em>talents</em> près de chez vous.",
     "heroSubtitle": "Cuisine, coiffure, couture, services… Découvrez les prestataires de la communauté en Italie, sans passer par les réseaux sociaux.",
     "searchPlaceholder": "Rechercher un service, un plat, une coiffure…",
     "searchButton": "Rechercher",
     "categories": "Catégories",
     "latestListings": "Dernières annonces",
     "popularServices": "Services populaires",
-    "noListings": "Aucune annonce pour le moment."
+    "noListings": "Aucune annonce pour le moment.",
+    "specialties": "{count} spécialités",
+    "seeAll": "Voir tout"
   },
   "search": {
     "title": "Résultats",
@@ -105,9 +107,25 @@
     "checkEmailTitle": "Vérifiez votre email",
     "checkEmailBody": "Un lien de confirmation vous a été envoyé. Cliquez dessus pour activer votre compte."
   },
+  "messaging": {
+    "contact": "Message interne",
+    "writeTo": "Écrire à {name}…",
+    "send": "Envoyer",
+    "sending": "Envoi…",
+    "cancel": "Annuler"
+  },
+  "categories": {
+    "cuisine": "Cuisine",
+    "beaute": "Beauté",
+    "couture": "Couture",
+    "services-divers": "Services divers"
+  },
   "footer": {
     "tagline": "L'annuaire des talents de la communauté en Italie.",
+    "navigationTitle": "Navigation",
+    "legalTitle": "Légal",
     "legal": "Mentions légales",
-    "privacy": "Confidentialité"
+    "privacy": "Confidentialité",
+    "bottomNote": "Annuaire communautaire · sans paiement · Italie"
   }
 }

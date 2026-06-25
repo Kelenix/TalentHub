@@ -5,6 +5,7 @@ import { Prisma } from "@prisma/client";
 import { z } from "zod";
 import { prisma } from "@/lib/prisma";
 import { getCurrentUser } from "@/lib/auth/user";
+import { notifyAdmins } from "@/lib/notifications/service";
 
 const photoSchema = z.object({ url: z.string().url(), isCover: z.boolean() });
 
@@ -131,6 +132,14 @@ export async function saveListingAction(
       },
     },
   });
+  if (data.status === "PUBLISHED") {
+    await notifyAdmins({
+      type: "NEW_LISTING",
+      title: "Nouvelle annonce publiée",
+      body: `« ${data.title} » par ${user.profile.firstName} ${user.profile.lastName}`,
+      link: "/admin/annonces",
+    });
+  }
   revalidatePath("/dashboard");
   return { id: created.id };
 }

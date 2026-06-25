@@ -36,6 +36,7 @@ export function FiltersForm({
   current: CurrentFilters;
 }) {
   const t = useTranslations("search");
+  const tcat = useTranslations("categories");
   const router = useRouter();
 
   function update(patch: Partial<CurrentFilters>) {
@@ -120,7 +121,7 @@ export function FiltersForm({
                     checked ? "text-ink" : "text-muted-foreground",
                   )}
                 >
-                  {c.name}
+                  {tcat.has(c.slug) ? tcat(c.slug) : c.name}
                 </span>
               </button>
             );

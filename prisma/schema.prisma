@@ -64,9 +64,32 @@ model User {
   createdAt DateTime   @default(now())
   updatedAt DateTime   @updatedAt
 
-  profile ProviderProfile?
+  profile       ProviderProfile?
+  notifications Notification[]
+
+  conversationsA Conversation[] @relation("ConversationA")
+  conversationsB Conversation[] @relation("ConversationB")
+  messagesSent   Message[]      @relation("MessageSender")
 
   @@map("users")
+}
+
+/// Notification destinée soit à un utilisateur précis (prestataire), soit aux admins.
+model Notification {
+  id        String   @id @default(cuid())
+  userId    String?  @db.Uuid
+  user      User?    @relation(fields: [userId], references: [id], onDelete: Cascade)
+  forAdmin  Boolean  @default(false)
+  type      String
+  title     String
+  body      String?
+  link      String?
+  read      Boolean  @default(false)
+  createdAt DateTime @default(now())
+
+  @@index([userId, read])
+  @@index([forAdmin, read])
+  @@map("notifications")
 }
 
 model ProviderProfile {
@@ -197,6 +220,7 @@ model Listing {
 
   photos        ListingPhoto[]
   contactEvents ContactEvent[]
+  conversations Conversation[]
 
   @@index([categoryId])
   @@index([subcategoryId])
@@ -244,4 +268,41 @@ model ContactEvent {
   @@index([listingId, type])
   @@index([createdAt])
   @@map("contact_events")
+}
+
+// ──────────────────────────── Messagerie interne (cf. cahier §16) ────────────────────────────
+
+/// Fil 1‑1 entre deux utilisateurs. Le couple (A,B) est canonique : A = plus petit id.
+model Conversation {
+  id             String   @id @default(cuid())
+  participantAId String   @db.Uuid
+  participantA   User     @relation("ConversationA", fields: [participantAId], references: [id], onDelete: Cascade)
+  participantBId String   @db.Uuid
+  participantB   User     @relation("ConversationB", fields: [participantBId], references: [id], onDelete: Cascade)
+  /// Annonce à l'origine du premier contact (contexte), optionnelle.
+  listingId      String?
+  listing        Listing? @relation(fields: [listingId], references: [id], onDelete: SetNull)
+
+  messages  Message[]
+  createdAt DateTime  @default(now())
+  updatedAt DateTime  @updatedAt
+
+  @@unique([participantAId, participantBId])
+  @@index([participantAId])
+  @@index([participantBId])
+  @@map("conversations")
+}
+
+model Message {
+  id             String       @id @default(cuid())
+  conversationId String
+  conversation   Conversation @relation(fields: [conversationId], references: [id], onDelete: Cascade)
+  senderId       String       @db.Uuid
+  sender         User         @relation("MessageSender", fields: [senderId], references: [id], onDelete: Cascade)
+  body           String
+  readAt         DateTime?
+  createdAt      DateTime     @default(now())
+
+  @@index([conversationId, createdAt])
+  @@map("messages")
 }

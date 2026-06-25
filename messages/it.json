@@ -18,14 +18,16 @@
   },
   "home": {
     "heroEyebrow": "Diaspora · comunità",
-    "heroTitle": "Trova i talenti vicino a te.",
+    "heroTitle": "Trova i <em>talenti</em> vicino a te.",
     "heroSubtitle": "Cucina, acconciature, sartoria, servizi… Scopri i prestatori della comunità in Italia, senza passare dai social.",
     "searchPlaceholder": "Cerca un servizio, un piatto, un'acconciatura…",
     "searchButton": "Cerca",
     "categories": "Categorie",
     "latestListings": "Ultimi annunci",
     "popularServices": "Servizi popolari",
-    "noListings": "Nessun annuncio per ora."
+    "noListings": "Nessun annuncio per ora.",
+    "specialties": "{count} specialità",
+    "seeAll": "Vedi tutto"
   },
   "search": {
     "title": "Risultati",
@@ -105,9 +107,25 @@
     "checkEmailTitle": "Controlla la tua email",
     "checkEmailBody": "Ti abbiamo inviato un link di conferma. Cliccaci sopra per attivare il tuo account."
   },
+  "messaging": {
+    "contact": "Messaggio interno",
+    "writeTo": "Scrivi a {name}…",
+    "send": "Invia",
+    "sending": "Invio…",
+    "cancel": "Annulla"
+  },
+  "categories": {
+    "cuisine": "Cucina",
+    "beaute": "Bellezza",
+    "couture": "Sartoria",
+    "services-divers": "Servizi vari"
+  },
   "footer": {
     "tagline": "L'annuario dei talenti della comunità in Italia.",
+    "navigationTitle": "Navigazione",
+    "legalTitle": "Legale",
     "legal": "Note legali",
-    "privacy": "Privacy"
+    "privacy": "Privacy",
+    "bottomNote": "Annuario comunitario · senza pagamento · Italia"
   }
 }

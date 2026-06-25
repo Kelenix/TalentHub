@@ -24,7 +24,7 @@ export async function Footer() {
 
           <div className="flex gap-14 text-sm">
             <div className="space-y-2.5">
-              <p className="font-semibold text-white">Navigation</p>
+              <p className="font-semibold text-white">{t("navigationTitle")}</p>
               <Link href="/" className="block transition-colors hover:text-white">
                 {tn("home")}
               </Link>
@@ -36,7 +36,7 @@ export async function Footer() {
               </Link>
             </div>
             <div className="space-y-2.5">
-              <p className="font-semibold text-white">Légal</p>
+              <p className="font-semibold text-white">{t("legalTitle")}</p>
               <Link
                 href="/mentions-legales"
                 className="block transition-colors hover:text-white"
@@ -54,7 +54,7 @@ export async function Footer() {
         </div>
 
         <div className="mt-12 flex flex-col gap-2 border-t border-sidebar-border pt-6 text-xs text-sidebar-foreground sm:flex-row sm:items-center sm:justify-between">
-          <span>Annuaire communautaire · sans paiement · Italie</span>
+          <span>{t("bottomNote")}</span>
           <span>© {year} TalentHub</span>
         </div>
       </div>

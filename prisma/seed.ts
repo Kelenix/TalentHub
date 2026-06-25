@@ -66,7 +66,17 @@ const categories: {
 
 // ── Pays (Italie = pays hôte + pays d'origine de la diaspora) ──
 const countries: { name: string; iso: string }[] = [
+  // Pays de service (Europe) — V1 Italie, extension Europe
   { name: "Italie", iso: "IT" },
+  { name: "France", iso: "FR" },
+  { name: "Belgique", iso: "BE" },
+  { name: "Espagne", iso: "ES" },
+  { name: "Allemagne", iso: "DE" },
+  { name: "Portugal", iso: "PT" },
+  { name: "Pays-Bas", iso: "NL" },
+  { name: "Suisse", iso: "CH" },
+  { name: "Royaume-Uni", iso: "GB" },
+  // Pays d'origine (diaspora)
   { name: "Cameroun", iso: "CM" },
   { name: "Côte d'Ivoire", iso: "CI" },
   { name: "Sénégal", iso: "SN" },
@@ -81,6 +91,54 @@ const countries: { name: string; iso: string }[] = [
   { name: "Gabon", iso: "GA" },
   { name: "Guinée", iso: "GN" },
 ];
+
+// ── Villes par pays de service (Europe) ──
+const citiesByCountry: Record<string, { name: string; region: string }[]> = {
+  FR: [
+    { name: "Paris", region: "Île-de-France" },
+    { name: "Lyon", region: "Auvergne-Rhône-Alpes" },
+    { name: "Marseille", region: "PACA" },
+    { name: "Lille", region: "Hauts-de-France" },
+    { name: "Toulouse", region: "Occitanie" },
+    { name: "Bordeaux", region: "Nouvelle-Aquitaine" },
+  ],
+  BE: [
+    { name: "Bruxelles", region: "Bruxelles-Capitale" },
+    { name: "Anvers", region: "Flandre" },
+    { name: "Liège", region: "Wallonie" },
+    { name: "Charleroi", region: "Wallonie" },
+  ],
+  ES: [
+    { name: "Madrid", region: "Communauté de Madrid" },
+    { name: "Barcelone", region: "Catalogne" },
+    { name: "Valence", region: "Communauté valencienne" },
+    { name: "Séville", region: "Andalousie" },
+  ],
+  DE: [
+    { name: "Berlin", region: "Berlin" },
+    { name: "Munich", region: "Bavière" },
+    { name: "Francfort", region: "Hesse" },
+    { name: "Cologne", region: "Rhénanie-du-Nord-Westphalie" },
+  ],
+  PT: [
+    { name: "Lisbonne", region: "Lisbonne" },
+    { name: "Porto", region: "Nord" },
+  ],
+  NL: [
+    { name: "Amsterdam", region: "Hollande-Septentrionale" },
+    { name: "Rotterdam", region: "Hollande-Méridionale" },
+  ],
+  CH: [
+    { name: "Genève", region: "Genève" },
+    { name: "Zurich", region: "Zurich" },
+    { name: "Lausanne", region: "Vaud" },
+  ],
+  GB: [
+    { name: "Londres", region: "Grand Londres" },
+    { name: "Manchester", region: "Grand Manchester" },
+    { name: "Birmingham", region: "West Midlands" },
+  ],
+};
 
 // ── Villes d'Italie (V1) ──
 const italianCities: { name: string; region: string }[] = [
@@ -140,6 +198,21 @@ async function main() {
     });
   }
   console.log(`  ✓ ${italianCities.length} villes (Italie)`);
+
+  // Villes des autres pays de service (extension Europe)
+  let euCount = 0;
+  for (const [iso, cities] of Object.entries(citiesByCountry)) {
+    const country = await prisma.country.findUniqueOrThrow({ where: { iso } });
+    for (const city of cities) {
+      await prisma.city.upsert({
+        where: { countryId_name: { countryId: country.id, name: city.name } },
+        update: { region: city.region },
+        create: { countryId: country.id, name: city.name, region: city.region },
+      });
+      euCount++;
+    }
+  }
+  console.log(`  ✓ ${euCount} villes (autres pays d'Europe)`);
 
   console.log("✅ Seed terminé.");
 }

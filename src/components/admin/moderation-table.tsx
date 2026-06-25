@@ -60,7 +60,7 @@ export function ModerationTable({ rows }: { rows: Row[] }) {
               <td className="px-5 py-3">
                 <div className="flex justify-end gap-3 font-medium">
                   <Link
-                    href={`/annonce/${r.id}`}
+                    href={`/admin/annonces/${r.id}`}
                     className="text-muted-foreground hover:text-ink"
                   >
                     Voir

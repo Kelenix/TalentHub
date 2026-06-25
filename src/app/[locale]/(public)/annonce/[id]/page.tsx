@@ -4,10 +4,12 @@ import { notFound } from "next/navigation";
 import { getTranslations, setRequestLocale } from "next-intl/server";
 import { Link } from "@/i18n/navigation";
 import { getListingById } from "@/lib/listings";
+import { getCurrentUser } from "@/lib/auth/user";
 import { formatDate, attr } from "@/lib/format";
 import { Badge } from "@/components/ui/badge";
 import { AvailabilityBadge } from "@/components/listings/availability-badge";
 import { ContactButtons } from "@/components/listings/contact-buttons";
+import { ContactMemberButton } from "@/components/messages/contact-member-button";
 import { ViewTracker } from "@/components/listings/view-tracker";
 import { ReportButton } from "@/components/listings/report-button";
 import { JsonLd } from "@/components/seo/json-ld";
@@ -45,6 +47,17 @@ export default async function ListingDetailPage({
 
   if (!listing) notFound();
 
+  // Visibilité : le public ne voit que les annonces PUBLIÉES.
+  // Le propriétaire et l'admin peuvent voir une annonce suspendue / brouillon.
+  const isPublished = listing.status === "PUBLISHED";
+  const viewer = await getCurrentUser();
+  const viewerIsOwner = viewer?.profile?.id === listing.providerId;
+  const viewerIsAdmin = viewer?.role === "ADMIN";
+  if (!isPublished && !viewerIsOwner && !viewerIsAdmin) notFound();
+  // Tout le monde voit le bouton (sauf le propriétaire) ; un visiteur déconnecté
+  // est invité à se connecter au clic.
+  const canMessage = !viewerIsOwner;
+
   const cover = listing.photos.find((p) => p.isCover) ?? listing.photos[0];
   const thumbs = listing.photos.filter((p) => p.id !== cover?.id).slice(0, 4);
   const provider = listing.provider;
@@ -55,7 +68,28 @@ export default async function ListingDetailPage({
 
   return (
     <div className="mx-auto max-w-7xl px-4 py-8">
-      <ViewTracker listingId={listing.id} />
+      {!isPublished && (
+        <div className="mb-6 flex flex-wrap items-center justify-between gap-2 rounded-xl border border-amber-300 bg-amber-50 px-4 py-3 text-sm text-amber-800">
+          <span>
+            {listing.status === "SUSPENDED"
+              ? viewerIsAdmin
+                ? "Annonce suspendue — masquée au public. Visible par vous (admin) et le prestataire."
+                : "Votre annonce est suspendue par la modération : elle n'est pas visible publiquement. Contactez l'administration pour toute justification."
+              : viewerIsAdmin
+                ? "Brouillon — non publié par le prestataire, masqué au public."
+                : "Cette annonce est en brouillon : elle n'est pas encore visible publiquement."}
+          </span>
+          {viewerIsAdmin && (
+            <Link
+              href="/admin/annonces"
+              className="font-semibold text-amber-900 underline hover:no-underline"
+            >
+              Gérer dans la modération →
+            </Link>
+          )}
+        </div>
+      )}
+      {isPublished && <ViewTracker listingId={listing.id} />}
       <JsonLd
         data={{
           "@context": "https://schema.org",
@@ -196,7 +230,7 @@ export default async function ListingDetailPage({
             </p>
           )}
 
-          <div className="mt-5">
+          <div className="mt-5 space-y-3">
             <ContactButtons
               listingId={listing.id}
               whatsappNumber={provider.whatsappNumber}
@@ -205,6 +239,14 @@ export default async function ListingDetailPage({
               whatsappLabel={tc("contactWhatsApp")}
               emailLabel={tc("sendEmail")}
             />
+            {canMessage && (
+              <ContactMemberButton
+                recipientId={provider.userId}
+                recipientName={`${provider.firstName} ${provider.lastName}`}
+                listingId={listing.id}
+                isLoggedIn={Boolean(viewer)}
+              />
+            )}
           </div>
 
           <p className="mt-4 text-center text-xs text-muted-foreground">

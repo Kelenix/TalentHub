@@ -4,6 +4,7 @@ import { redirect } from "next/navigation";
 import { z } from "zod";
 import { prisma } from "@/lib/prisma";
 import { createClient } from "@/lib/supabase/server";
+import { notifyAdmins } from "@/lib/notifications/service";
 
 export type AuthState = { error?: string; success?: boolean };
 
@@ -61,6 +62,12 @@ export async function signUpAction(
     } catch {
       // ligne déjà existante : on ignore
     }
+    await notifyAdmins({
+      type: "NEW_USER",
+      title: "Nouvelle inscription",
+      body: `${firstName} ${lastName} · ${email}`,
+      link: "/admin/utilisateurs",
+    });
   }
 
   return { success: true };

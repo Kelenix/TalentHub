@@ -1,8 +1,8 @@
 import { defineRouting } from "next-intl/routing";
 
 export const routing = defineRouting({
-  // Langues V1 : français + italien (architecture extensible à l'Europe)
-  locales: ["fr", "it"],
+  // FR + IT (V1) + EN (extension Europe — cf. cahier des charges §16)
+  locales: ["fr", "it", "en"],
   defaultLocale: "fr",
   localePrefix: "as-needed",
 });

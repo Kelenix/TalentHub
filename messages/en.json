@@ -1,0 +1,131 @@
+{
+  "common": {
+    "brandName": "TalentHub",
+    "contactWhatsApp": "Contact on WhatsApp",
+    "sendEmail": "Send an email",
+    "available": "Available",
+    "unavailable": "Unavailable",
+    "viewProfile": "View full profile",
+    "noPaymentNotice": "No payment on the platform. You deal directly with the provider."
+  },
+  "nav": {
+    "home": "Home",
+    "search": "Search",
+    "categories": "Categories",
+    "login": "Log in",
+    "publish": "Post a listing",
+    "dashboard": "Dashboard"
+  },
+  "home": {
+    "heroEyebrow": "Diaspora · community",
+    "heroTitle": "Find <em>talent</em> near you.",
+    "heroSubtitle": "Cooking, hair, sewing, services… Discover the community's providers in Italy, without going through social media.",
+    "searchPlaceholder": "Search for a service, a dish, a hairstyle…",
+    "searchButton": "Search",
+    "categories": "Categories",
+    "latestListings": "Latest listings",
+    "popularServices": "Popular services",
+    "noListings": "No listings yet.",
+    "specialties": "{count} specialties",
+    "seeAll": "See all"
+  },
+  "search": {
+    "title": "Results",
+    "searchPlaceholder": "Search for a service, a dish, a hairstyle…",
+    "filters": "Filters",
+    "country": "Country",
+    "city": "City",
+    "category": "Category",
+    "subcategory": "Subcategory",
+    "nationality": "Origin",
+    "allCities": "All cities",
+    "allNationalities": "All origins",
+    "availabilityOnly": "Available only",
+    "sort": "Sort",
+    "resultsFor": "{count} results",
+    "noResults": "No listing matches your search."
+  },
+  "listing": {
+    "preparationTime": "Preparation time",
+    "duration": "Duration",
+    "hairstyleType": "Hairstyle type",
+    "serviceZone": "Service area",
+    "publishedOn": "Published on",
+    "origin": "Origin"
+  },
+  "provider": {
+    "about": "About",
+    "listings": "This provider's listings",
+    "verified": "Verified profile",
+    "memberSince": "Member since {year}",
+    "countryOfOrigin": "Country of origin",
+    "cityRegion": "City · Region",
+    "languages": "Languages",
+    "social": "Social media"
+  },
+  "dashboard": {
+    "myListings": "My listings",
+    "subtitle": "Manage your services and availability",
+    "addListing": "Add a listing",
+    "myProfile": "My profile",
+    "availability": "Availability",
+    "messages": "Messages",
+    "statistics": "Statistics",
+    "activeListings": "Active listings",
+    "viewsThisMonth": "Views this month",
+    "whatsappContacts": "WhatsApp contacts",
+    "edit": "Edit",
+    "delete": "Delete",
+    "annonceCol": "Listing",
+    "categoryCol": "Category",
+    "viewsCol": "Views",
+    "actionsCol": "Actions"
+  },
+  "admin": {
+    "title": "Administration",
+    "dashboard": "Dashboard",
+    "users": "Users",
+    "listings": "Listings",
+    "categories": "Categories",
+    "moderation": "Moderation",
+    "statistics": "Statistics",
+    "providers": "Providers",
+    "pending": "Pending",
+    "reports": "Reports"
+  },
+  "auth": {
+    "login": "Log in",
+    "register": "Sign up",
+    "email": "Email address",
+    "password": "Password",
+    "submitLogin": "Log in",
+    "submitRegister": "Create my account",
+    "firstName": "First name",
+    "lastName": "Last name",
+    "whatsapp": "WhatsApp number",
+    "logout": "Log out",
+    "checkEmailTitle": "Check your email",
+    "checkEmailBody": "A confirmation link has been sent to you. Click it to activate your account."
+  },
+  "messaging": {
+    "contact": "Internal message",
+    "writeTo": "Write to {name}…",
+    "send": "Send",
+    "sending": "Sending…",
+    "cancel": "Cancel"
+  },
+  "categories": {
+    "cuisine": "Cooking",
+    "beaute": "Beauty",
+    "couture": "Sewing",
+    "services-divers": "Services"
+  },
+  "footer": {
+    "tagline": "The directory of community talent in Italy.",
+    "navigationTitle": "Navigation",
+    "legalTitle": "Legal",
+    "legal": "Legal notice",
+    "privacy": "Privacy",
+    "bottomNote": "Community directory · no payment · Italy"
+  }
+}

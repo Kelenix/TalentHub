@@ -121,4 +121,28 @@
     font-family: var(--font-display);
     letter-spacing: -0.02em;
   }
+
+  /* Tailwind v4 (Preflight) met cursor:default sur les boutons → on rétablit
+     le pointer sur tous les éléments interactifs cliquables. */
+  button,
+  [role="button"],
+  summary,
+  label[for],
+  select,
+  input[type="checkbox"],
+  input[type="radio"],
+  input[type="submit"],
+  input[type="button"],
+  input[type="reset"] {
+    cursor: pointer;
+  }
+
+  button:disabled,
+  button[aria-disabled="true"],
+  [role="button"][aria-disabled="true"],
+  input:disabled,
+  select:disabled,
+  .cursor-not-allowed {
+    cursor: not-allowed;
+  }
 }

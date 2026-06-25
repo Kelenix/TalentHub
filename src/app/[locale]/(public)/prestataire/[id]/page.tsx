@@ -3,10 +3,12 @@ import Image from "next/image";
 import { notFound } from "next/navigation";
 import { getTranslations, setRequestLocale } from "next-intl/server";
 import { getProviderById, getProviderListings } from "@/lib/listings";
+import { getCurrentUser } from "@/lib/auth/user";
 import { whatsappLink, mailtoLink } from "@/lib/contact";
 import { buttonVariants } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 import { ListingCard } from "@/components/listings/listing-card";
+import { ContactMemberButton } from "@/components/messages/contact-member-button";
 import { cn } from "@/lib/utils";
 
 export const dynamic = "force-dynamic";
@@ -41,8 +43,14 @@ export default async function ProviderProfilePage({
 
   if (!provider) notFound();
 
-  const listings = await getProviderListings(provider.id);
+  const [listings, viewer] = await Promise.all([
+    getProviderListings(provider.id),
+    getCurrentUser(),
+  ]);
   const message = `Bonjour ${provider.firstName}, je vous contacte via TalentHub.`;
+  // Tout le monde voit le bouton (sauf le prestataire lui-même) ; un visiteur
+  // déconnecté est invité à se connecter au clic.
+  const canMessage = viewer?.id !== provider.userId;
 
   const social = (provider.socialLinks ?? {}) as Record<string, string>;
   const socialLinks = (
@@ -104,21 +112,36 @@ export default async function ProviderProfilePage({
             </div>
           </div>
 
-          <div className="flex shrink-0 gap-2">
-            <a
-              href={whatsappLink(provider.whatsappNumber, message)}
-              target="_blank"
-              rel="noopener noreferrer"
-              className={cn(buttonVariants({ variant: "whatsapp", size: "sm" }))}
-            >
-              {tc("contactWhatsApp")}
-            </a>
-            <a
-              href={mailtoLink(provider.contactEmail, message)}
-              className={cn(buttonVariants({ variant: "outline", size: "sm" }))}
-            >
-              {tc("sendEmail")}
-            </a>
+          <div className="flex shrink-0 flex-col gap-2 sm:w-64">
+            <div className="flex gap-2">
+              <a
+                href={whatsappLink(provider.whatsappNumber, message)}
+                target="_blank"
+                rel="noopener noreferrer"
+                className={cn(
+                  buttonVariants({ variant: "whatsapp", size: "sm" }),
+                  "flex-1",
+                )}
+              >
+                {tc("contactWhatsApp")}
+              </a>
+              <a
+                href={mailtoLink(provider.contactEmail, message)}
+                className={cn(
+                  buttonVariants({ variant: "outline", size: "sm" }),
+                  "flex-1",
+                )}
+              >
+                {tc("sendEmail")}
+              </a>
+            </div>
+            {canMessage && (
+              <ContactMemberButton
+                recipientId={provider.userId}
+                recipientName={`${provider.firstName} ${provider.lastName}`}
+                isLoggedIn={Boolean(viewer)}
+              />
+            )}
           </div>
         </div>
       </header>

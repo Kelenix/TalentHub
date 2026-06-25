@@ -26,7 +26,11 @@ export default async function HomePage({
 }) {
   const { locale } = await params;
   setRequestLocale(locale);
-  const t = await getTranslations("home");
+  const [t, tcat, tsearch] = await Promise.all([
+    getTranslations("home"),
+    getTranslations("categories"),
+    getTranslations("search"),
+  ]);
 
   const [categories, cities, latest, popular] = await Promise.all([
     getCategories(),
@@ -62,8 +66,9 @@ export default async function HomePage({
             className="animate-in fade-in-0 slide-in-from-bottom-4 mt-5 text-4xl font-extrabold leading-[1.05] tracking-tight text-ink duration-700 sm:text-6xl"
             style={{ animationDelay: "80ms" }}
           >
-            Trouvez les <span className="text-primary">talents</span> près de
-            chez vous.
+            {t.rich("heroTitle", {
+              em: (chunks) => <span className="text-primary">{chunks}</span>,
+            })}
           </h1>
           <p
             className="animate-in fade-in-0 slide-in-from-bottom-4 mt-6 max-w-xl text-lg leading-relaxed text-muted-foreground duration-700"
@@ -78,6 +83,7 @@ export default async function HomePage({
             <SearchBar
               placeholder={t("searchPlaceholder")}
               buttonLabel={t("searchButton")}
+              cityLabel={tsearch("city")}
               cities={cities.map((c) => ({ id: c.id, name: c.name }))}
             />
           </div>
@@ -103,9 +109,11 @@ export default async function HomePage({
                     <span className="flex size-11 items-center justify-center rounded-xl bg-secondary transition-colors group-hover:bg-terracotta-soft">
                       <Icon className="size-5 text-primary" />
                     </span>
-                    <p className="mt-4 font-semibold text-ink">{c.name}</p>
+                    <p className="mt-4 font-semibold text-ink">
+                      {tcat.has(c.slug) ? tcat(c.slug) : c.name}
+                    </p>
                     <p className="mt-1 text-xs text-muted-foreground">
-                      {c.subcategories.length} spécialités
+                      {t("specialties", { count: c.subcategories.length })}
                     </p>
                   </Link>
                 );
@@ -117,11 +125,13 @@ export default async function HomePage({
         <ListingSection
           title={t("latestListings")}
           emptyLabel={t("noListings")}
+          seeAllLabel={t("seeAll")}
           listings={latest}
         />
         <ListingSection
           title={t("popularServices")}
           emptyLabel={t("noListings")}
+          seeAllLabel={t("seeAll")}
           listings={popular}
         />
 
@@ -131,8 +141,9 @@ export default async function HomePage({
           .map((c) => (
             <ListingSection
               key={c.slug}
-              title={c.name}
+              title={tcat.has(c.slug) ? tcat(c.slug) : c.name}
               emptyLabel={t("noListings")}
+              seeAllLabel={t("seeAll")}
               listings={c.listings}
               href={`/recherche?category=${c.slug}`}
             />
@@ -145,11 +156,13 @@ export default async function HomePage({
 function ListingSection({
   title,
   emptyLabel,
+  seeAllLabel,
   listings,
   href = "/recherche",
 }: {
   title: string;
   emptyLabel: string;
+  seeAllLabel: string;
   listings: Awaited<ReturnType<typeof getLatestListings>>;
   href?: string;
 }) {
@@ -161,7 +174,7 @@ function ListingSection({
           href={href}
           className="inline-flex items-center gap-1 text-sm font-semibold text-terracotta-deep hover:underline"
         >
-          Voir tout <ArrowRight className="size-4" />
+          {seeAllLabel} <ArrowRight className="size-4" />
         </Link>
       </div>
       {listings.length === 0 ? (

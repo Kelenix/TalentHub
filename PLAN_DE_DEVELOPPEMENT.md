@@ -241,8 +241,14 @@ Toutes les entrées validées par Zod ; contrôle de rôle sur chaque action pro
 - ✅ **Guide de déploiement** : `DEPLOY.md` (Vercel + Supabase prod, env, domaine, checklist).
 - ⏳ **Reste (action utilisateur)** : déploiement Vercel + domaine + `make:admin` en prod + monitoring (Sentry/Vercel Analytics). i18n des pages légales en IT à compléter si besoin.
 
-### Évolutions futures (post-V1, cf. cahier §16)
-Apps mobiles · géolocalisation · avis & notes · favoris · messagerie interne · Premium · pub sponsorisée · multilingue étendu · extension Europe.
+### Phase 4 — Évolutions §16 (en cours)
+- ✅ **Extension Europe** : 9 pays de service (Italie + FR/BE/ES/DE/PT/NL/CH/GB) + 42 villes seedées ; filtre « Pays » de la recherche activé.
+- ✅ **Pub sponsorisée** : champs `promoted`/`promotedUntil` ; bouton admin « Mettre en avant » (30 j) sur `/admin/annonces/[id]` ; badge « ★ Sponsorisé » + tri prioritaire dans les résultats. Monétisation sans Stripe (facturation hors-ligne).
+- ✅ **Multilingue étendu (EN)** : 3ᵉ locale `en` (routing + `messages/en.json` complet) ; sélecteur FR/IT/EN ; sitemap multilingue.
+- ✅ **Messagerie interne** : modèles `Conversation`/`Message` (fil unique par paire) ; boîte de réception `/dashboard/messages` + fil `/dashboard/messages/[id]` (envoi, marquage lu, badge non-lus) ; bouton « Message interne » sur annonce + profil prestataire (membres connectés) ; notification + email au destinataire.
+- ⏳ **Premium prestataire** : à faire — **nécessite Stripe** (abonnement). Introduit en dernier.
+- ⏳ **Autres (cahier §16)** : apps mobiles · géolocalisation · avis & notes · favoris.
+
 *Le modèle multi-pays et le JSONB `attributes` sont déjà prévus pour absorber ces évolutions.*
 
 ---

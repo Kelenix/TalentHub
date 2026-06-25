@@ -10,6 +10,9 @@ export function ListingCard({ listing }: { listing: ListingWithRelations }) {
     .filter(Boolean)
     .join(" · ");
   const providerName = `${listing.provider.firstName} ${listing.provider.lastName}`;
+  const isPromoted =
+    listing.promoted &&
+    (!listing.promotedUntil || new Date(listing.promotedUntil) > new Date());
 
   return (
     <Link
@@ -33,6 +36,11 @@ export function ListingCard({ listing }: { listing: ListingWithRelations }) {
         <span className="absolute left-3 top-3 rounded-full bg-card/90 px-2.5 py-1 text-xs font-semibold text-ink shadow-sm backdrop-blur">
           {tag}
         </span>
+        {isPromoted && (
+          <span className="absolute right-3 top-3 rounded-full bg-primary px-2.5 py-1 text-xs font-semibold text-white shadow-sm">
+            ★ Sponsorisé
+          </span>
+        )}
       </div>
 
       <div className="space-y-2 p-4">

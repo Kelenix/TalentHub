@@ -6,13 +6,23 @@ import { Logo } from "@/components/brand/logo";
 import { signOutAction } from "@/lib/auth/actions";
 import { cn } from "@/lib/utils";
 
-export function DashboardSidebar({ userName }: { userName: string }) {
+export function DashboardSidebar({
+  userName,
+  notifCount = 0,
+  msgCount = 0,
+}: {
+  userName: string;
+  notifCount?: number;
+  msgCount?: number;
+}) {
   const t = useTranslations("dashboard");
   const ta = useTranslations("auth");
   const pathname = usePathname();
 
-  const items = [
+  const items: { href: string; label: string; badge?: number }[] = [
     { href: "/dashboard", label: t("myListings") },
+    { href: "/dashboard/messages", label: t("messages"), badge: msgCount },
+    { href: "/dashboard/notifications", label: "Notifications", badge: notifCount },
     { href: "/dashboard/profil", label: t("myProfile") },
     { href: "/dashboard/disponibilite", label: t("availability") },
     { href: "/dashboard/statistiques", label: t("statistics") },
@@ -47,13 +57,18 @@ export function DashboardSidebar({ userName }: { userName: string }) {
               key={item.href}
               href={item.href}
               className={cn(
-                "whitespace-nowrap rounded-lg px-4 py-2.5 text-sm font-medium transition-colors",
+                "flex items-center gap-2 whitespace-nowrap rounded-lg px-4 py-2.5 text-sm font-medium transition-colors",
                 active
                   ? "bg-sidebar-accent text-sidebar-accent-foreground"
                   : "text-sidebar-foreground/70 hover:bg-sidebar-accent/60 hover:text-sidebar-accent-foreground",
               )}
             >
               {item.label}
+              {item.badge ? (
+                <span className="ml-auto inline-flex min-w-5 items-center justify-center rounded-full bg-primary px-1.5 text-xs font-semibold text-white">
+                  {item.badge}
+                </span>
+              ) : null}
             </Link>
           );
         })}
